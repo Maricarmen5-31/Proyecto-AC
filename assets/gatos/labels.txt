@@ -1,0 +1,8 @@
+0 Gato angora turco
+1 Gato bengala
+2 Gato bombay
+3 Gato british Shorthair
+4 Gato oriental
+5 Gato persa
+6 Gato siamés
+7 Gato sphynx
