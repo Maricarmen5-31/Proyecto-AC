@@ -1,9 +1,10 @@
 0 Bulldog
 1 Caniche o poodle
 2 Chihuahua
-3 Dálmata
-4 Dóberman
-5 Husky siberiano
-6 Pastor alemán
-7 Pug o carlino
-8 San Bernando
+3 Dachshund
+4 Dálmata
+5 Dóberman
+6 Husky siberiano
+7 Pastor alemán
+8 Pug o carlino
+9 San Bernando

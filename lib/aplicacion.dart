@@ -1,75 +1,49 @@
+import 'package:aprendiendo/home.dart';
+import 'package:aprendiendo/lista.dart';
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-
-import './perros.dart' as dog;
-import './gatos.dart' as cat;
-import './osos.dart' as oso;
+import 'perros.dart';
+import 'home.dart';
+import 'gatos.dart';
+import 'lista.dart';
+import 'osos.dart';
 
 class Aplicacion extends StatefulWidget {
   @override
   _AplicacionState createState() => _AplicacionState();
 }
 
-class _AplicacionState extends State<Aplicacion>
-    with SingleTickerProviderStateMixin {
-  TabController controller;
-  @override
-  void initState() {
-    controller = new TabController(vsync: this, length: 3);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+class _AplicacionState extends State<Aplicacion> {
+  int selectedIndex = 2;
+  List<Widget> listWidgets = [Osos(), Perros(), Home(), Gatos(), Lista()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal[300],
         title: new Text("Aprendiendo animales"),
-        bottom: new TabBar(
-          controller: controller,
-          tabs: <Widget>[
-            new Tab(
-              icon: new Icon(Icons.pets),
-              text: "Perros",
-            ),
-            new Tab(
-              icon: new Icon(Icons.pets),
-              text: "Gatos",
-            ),
-            new Tab(
-              icon: new Icon(Icons.pets),
-              text: "Osos",
-            ),
-          ],
-        ),
+        backgroundColor: Colors.teal,
       ),
-      body: new TabBarView(controller: controller, children: <Widget>[
-        new dog.Perros(),
-        new cat.Gatos(),
-        new oso.Osos(),
-      ]),
-      bottomNavigationBar: new Material(
-        color: Colors.teal[500],
-        child: new TabBar(
-          controller: controller,
-          tabs: <Widget>[
-            new Tab(
-              icon: new Icon(Icons.pets),
-            ),
-            new Tab(
-              icon: new Icon(Icons.pets),
-            ),
-            new Tab(
-              icon: new Icon(Icons.pets),
-            ),
-          ],
-        ),
+      body: listWidgets[selectedIndex],
+      bottomNavigationBar: ConvexAppBar(
+        items: [
+          TabItem(icon: Icons.pets, title: 'Osos'),
+          TabItem(icon: Icons.pets, title: 'Perros'),
+          TabItem(icon: Icons.home, title: 'Home'),
+          TabItem(icon: Icons.pets, title: 'Gatos'),
+          TabItem(icon: Icons.all_inbox, title: 'Lista'),
+        ],
+        onTap: onItemTapped,
+        backgroundColor: Colors.teal,
+        initialActiveIndex: 2, //optional, default as 0
+        //onTap: (int i) => print('click index=$i'),
       ),
     );
+  }
+
+  void onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
   }
 }

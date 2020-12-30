@@ -10,81 +10,142 @@ class Osos extends StatefulWidget {
 }
 
 class _OsosState extends State<Osos> {
-  File imageURI;
-  var result;
-  String path;
+  List _outputs;
+  File _image;
+  bool _loading = false;
 
-  Future getImageFromCamera() async {
-    try {
-      var image = await ImagePicker.pickImage(source: ImageSource.camera);
+  @override
+  void initState() {
+    super.initState();
+    _loading = true;
 
+    loadModel().then((value) {
       setState(() {
-        imageURI = image;
-        path = image.path;
+        _loading = false;
       });
-    } catch (e) {
-      print("Error al obtener la imagen desde la camara");
-    }
-
-    classifyImage();
-  }
-
-  Future getImageFromGallery() async {
-    try {
-      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-      setState(() {
-        imageURI = image;
-        path = image.path;
-      });
-    } catch (e) {
-      print("Error al obtener la imagen desde la galeria");
-    }
-
-    classifyImage();
-  }
-
-  Future classifyImage() async {
-    await Tflite.loadModel(
-        model: "assets/osos/model_unquant.tflite",
-        labels: "assets/osos/labels.txt");
-    var output = await Tflite.runModelOnImage(path: path);
-
-    setState(() {
-      result = output;
-      print(output[0]["confidence"].toStringAsFixed(3));
     });
+  }
+
+  loadModel() async {
+    await Tflite.loadModel(
+      model: "assets/perros/model_unquant.tflite",
+      labels: "assets/perros/labels.txt",
+      numThreads: 1,
+    );
+  }
+
+  classifyImage(File image) async {
+    var output = await Tflite.runModelOnImage(
+        path: image.path,
+        imageMean: 0.0,
+        imageStd: 255.0,
+        numResults: 2,
+        threshold: 0.2,
+        asynch: true);
+    setState(() {
+      _loading = false;
+      _outputs = output;
+    });
+  }
+
+  @override
+  void dispose() {
+    Tflite.close();
+    super.dispose();
+  }
+
+  pickImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (image == null) return null;
+    setState(() {
+      _loading = true;
+      _image = image;
+    });
+    classifyImage(_image);
+  }
+
+  pickImageC() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    if (image == null) return null;
+    setState(() {
+      _loading = true;
+      _image = image;
+    });
+    classifyImage(_image);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromRGBO(48, 48, 48, 1),
-        body: Center(
-            child: SingleChildScrollView(
-          child: Column(
+      body: Stack(
+        children: <Widget>[
+          Background(),
+          SingleChildScrollView(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                imageURI == null
-                    ? Text(
-                        'por favor seleccione la imagen desde la galeria o camara',
-                        style: TextStyle(color: Colors.white),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  height: 220,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.teal,
+                    image: DecorationImage(
+                        image: AssetImage('assets/imagenes/bear.png')),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                _loading
+                    ? Container(
+                        height: 300,
+                        width: 300,
                       )
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.file(imageURI,
-                            width: 300, height: 200, fit: BoxFit.cover),
+                    : Container(
+                        margin: EdgeInsets.all(20),
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            _image == null
+                                ? Container(
+                                    child: Text(
+                                        "Por favor seleccione la imagen desde la galeria o camara"),
+                                  )
+                                : Image.file(_image),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            _image == null
+                                ? Container()
+                                : _outputs != null
+                                    ? Text(
+                                        _outputs[0]["label"],
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 20),
+                                      )
+                                    : Container(child: Text(""))
+                          ],
+                        ),
                       ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.01,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                         margin: EdgeInsets.fromLTRB(0, 30, 0, 20),
                         child: IconButton(
-                          onPressed: () => getImageFromCamera(),
+                          onPressed: pickImage,
                           icon: Icon(
                             Icons.camera,
-                            color: Colors.white,
+                            color: Colors.teal,
                           ),
                           iconSize: 50,
                           color: Colors.blue,
@@ -93,71 +154,37 @@ class _OsosState extends State<Osos> {
                     Container(
                         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                         child: IconButton(
-                          icon: Icon(Icons.image, color: Colors.white),
+                          icon: Icon(
+                            Icons.image,
+                            color: Colors.teal,
+                          ),
                           iconSize: 50,
-                          onPressed: () => getImageFromGallery(),
+                          onPressed: pickImageC,
                           color: Colors.blue,
                           padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
                         )),
                   ],
                 ),
-                SizedBox(
-                  height: 4,
-                ),
-                result != null && result[0]['label'] == "3 Oso Pardo"
-                    ? Container(
-                        child: Image.asset(
-                          "assets/osos/3.jpg",
-                          width: 100,
-                          height: 100,
-                        ),
-                      )
-                    : Container(),
-                result != null && result[0]['label'] == "2 Oso Panda"
-                    ? Container(
-                        child: Image.asset(
-                          "assets/osos/2.jpg",
-                          width: 100,
-                          height: 100,
-                        ),
-                      )
-                    : Container(),
-                result != null && result[0]['label'] == "1 Oso Polar"
-                    ? Container(
-                        child: Image.asset(
-                          "assets/osos/1.jpg",
-                          width: 100,
-                          height: 100,
-                        ),
-                      )
-                    : Container(),
-                result != null && result[0]['label'] == "0 Oso de Anteojos"
-                    ? Container(
-                        child: Image.asset(
-                          "assets/osos/0.jpg",
-                          width: 100,
-                          height: 100,
-                        ),
-                      )
-                    : Container(),
-                SizedBox(
-                  height: 10,
-                ),
-                result == null
-                    ? Text(
-                        'Resultado',
-                        style: TextStyle(color: Colors.white),
-                      )
-                    : Container(
-                        child: Text(
-                          "${result[0]['label'].substring(2)} : ${(result[0]['confidence'] * 100).toStringAsFixed(1)} %",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30),
-                        ),
-                      )
-              ]),
-        )));
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Background extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/fondos/fondoo.png"),
+          repeat: ImageRepeat.repeat,
+        ),
+        color: const Color(0xFFFFF9C4),
+      ),
+    );
   }
 }

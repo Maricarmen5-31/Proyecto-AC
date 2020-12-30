@@ -21,8 +21,9 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  convex_bottom_bar:
   image_picker: 
-  tflite:
+  tflite: ^1.0.5
   flutter:
     sdk: flutter
 
@@ -58,11 +59,15 @@ flutter:
     - assets/perros/labels.txt
     - assets/gatos/labels.txt
     - assets/osos/labels.txt
+    - assets/logos/im.jpg
     - assets/perros/model_unquant.tflite
     - assets/gatos/model_unquant.tflite
     - assets/osos/model_unquant.tflite
     - assets/logos/cu.jpg
     - assets/fondos/fondo.jpg
+    - assets/fondos/fonfop.jpg
+    - assets/fondos/fondoo.png
+    - assets/fondos/fondog.jpg
     - assets/perros/0.jpg
     - assets/perros/1.jpg
     - assets/perros/2.jpg
@@ -84,6 +89,13 @@ flutter:
     - assets/osos/1.jpg
     - assets/osos/2.jpg
     - assets/osos/3.jpg
+    - assets/imagenes/oso.png
+    - assets/imagenes/gato.png
+    - assets/imagenes/perro.png
+    - assets/imagenes/dog.png
+    - assets/imagenes/cat.png
+    - assets/imagenes/im.jpg
+    - assets/imagenes/bear.png
 
 
   #   - images/a_dot_ham.jpeg

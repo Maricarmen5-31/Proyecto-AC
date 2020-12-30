@@ -1,4 +1,4 @@
-0 Oso de Anteojos
-1 Oso Polar
-2 Oso Panda
-3 Oso Pardo
+0 Oso de anteojos
+1 Oso panda
+2 Oso pardo
+3 Oso polar
