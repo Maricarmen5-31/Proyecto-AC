@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 
+// AUTOR : EDITH MARICARMEN COAUIRA CUEVAS
+
 class Gatos extends StatefulWidget {
   @override
   _GatosState createState() => _GatosState();
@@ -85,10 +87,10 @@ class _GatosState extends State<Gatos> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 10,
+                  height: 25,
                 ),
                 Container(
-                  height: 200,
+                  height: 220,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -97,6 +99,26 @@ class _GatosState extends State<Gatos> {
                         image: AssetImage('assets/imagenes/cat.png')),
                   ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                    margin: new EdgeInsets.only(
+                      top: 10,
+                    ),
+                    child: RaisedButton(
+                      color: Colors.teal,
+                      child: Center(
+                        heightFactor: 2.0,
+                        widthFactor: 1.5,
+                        child: Text("APRENDIENDO RAZAS DE GATOS",
+                            style: const TextStyle(
+                                fontSize: 15.0,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700)),
+                      ),
+                      shape: StadiumBorder(),
+                    )),
                 SizedBox(
                   height: 10,
                 ),
@@ -140,9 +162,10 @@ class _GatosState extends State<Gatos> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
+                        color: Colors.white,
                         margin: EdgeInsets.fromLTRB(0, 30, 0, 20),
                         child: IconButton(
-                          onPressed: pickImage,
+                          onPressed: pickImageC,
                           icon: Icon(
                             Icons.camera,
                             color: Colors.teal,
@@ -152,6 +175,7 @@ class _GatosState extends State<Gatos> {
                           padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
                         )),
                     Container(
+                        color: Colors.white,
                         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                         child: IconButton(
                           icon: Icon(
@@ -159,7 +183,7 @@ class _GatosState extends State<Gatos> {
                             color: Colors.teal,
                           ),
                           iconSize: 50,
-                          onPressed: pickImageC,
+                          onPressed: pickImage,
                           color: Colors.blue,
                           padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
                         )),

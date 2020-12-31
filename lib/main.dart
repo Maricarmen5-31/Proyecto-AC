@@ -1,6 +1,8 @@
 import 'package:aprendiendo/pantallaBienvenida.dart';
 import 'package:flutter/material.dart';
 
+// AUTOR : EDITH MARICARMEN COAUIRA CUEVAS
+
 void main() {
   runApp(MyApp());
 }

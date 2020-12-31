@@ -8,6 +8,8 @@ import 'gatos.dart';
 import 'lista.dart';
 import 'osos.dart';
 
+// AUTOR : EDITH MARICARMEN COAUIRA CUEVAS
+
 class Aplicacion extends StatefulWidget {
   @override
   _AplicacionState createState() => _AplicacionState();

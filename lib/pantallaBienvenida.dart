@@ -3,6 +3,8 @@ import 'package:aprendiendo/aplicacion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// AUTOR : EDITH MARICARMEN COAUIRA CUEVAS
+
 class PantallaBienvenida extends StatefulWidget {
   @override
   _PantallaBienvenidaState createState() => _PantallaBienvenidaState();
