@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 
-// AUTOR : EDITH MARICARMEN COAUIRA CUEVAS
+// AUTOR : EDITH MARICARMEN COAQUIRA CUEVAS
 
 class Osos extends StatefulWidget {
   @override
@@ -30,8 +30,8 @@ class _OsosState extends State<Osos> {
 
   loadModel() async {
     await Tflite.loadModel(
-      model: "assets/perros/model_unquant.tflite",
-      labels: "assets/perros/labels.txt",
+      model: "assets/osos/model_unquant.tflite",
+      labels: "assets/osos/labels.txt",
       numThreads: 1,
     );
   }
@@ -152,7 +152,7 @@ class _OsosState extends State<Osos> {
                                 : _outputs != null
                                     ? Container(
                                         child: Text(
-                                          "${_outputs[0]["label"].substring(2)} : ${(_outputs[0]['confidence'] * 100).toStringAsFixed(1)}%",
+                                          _outputs[0]["label"],
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 20),
